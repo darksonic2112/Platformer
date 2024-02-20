@@ -9,6 +9,7 @@ public class LevelParser : MonoBehaviour
     public GameObject brickPrefab;
     public GameObject questionBoxPrefab;
     public GameObject stonePrefab;
+    public GameObject coinPrefab;
     public Transform environmentRoot;
     float offset = 0.5f;
 
@@ -73,6 +74,11 @@ public class LevelParser : MonoBehaviour
                     Instantiate(stonePrefab, newPos, Quaternion.identity, environmentRoot);
                 }
                 if (letter == '?')
+                {
+                    Vector3 newPos = new Vector3(column + offset, row + offset, 0f);
+                    Instantiate(questionBoxPrefab, newPos, Quaternion.identity, environmentRoot);
+                }
+                if (letter == 'C')
                 {
                     Vector3 newPos = new Vector3(column + offset, row + offset, 0f);
                     Instantiate(questionBoxPrefab, newPos, Quaternion.identity, environmentRoot);
