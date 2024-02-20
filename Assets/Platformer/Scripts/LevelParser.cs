@@ -34,8 +34,7 @@ public class LevelParser : MonoBehaviour
         Debug.Log($"Loading level file: {fileToParse}");
 
         Stack<string> levelRows = new Stack<string>();
-
-        // Get each line of text representing blocks in our level
+        
         using (StreamReader sr = new StreamReader(fileToParse))
         {
             string line = "";
@@ -47,7 +46,6 @@ public class LevelParser : MonoBehaviour
             sr.Close();
         }
         int row = 0;
-        // Go through the rows from bottom to top
         while (levelRows.Count > 0)
         {
             string currentLine = levelRows.Pop();
