@@ -26,10 +26,6 @@ public class MouseInteraction : MonoBehaviour
                 { 
                     CollectCoin(hit.collider.gameObject);
                 }
-                else if (hit.collider.CompareTag("Coins"))
-                { 
-                    CollectCoin(hit.collider.gameObject);
-                }
                 else
                 {
                     Debug.Log("Object not found");
