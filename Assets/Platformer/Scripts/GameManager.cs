@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         UpdateTimer();
-        intTime = 105 - (int)Time.realtimeSinceStartup;
+        intTime = 110 - (int)Time.realtimeSinceStartup;
         Debug.Log(GetTimer());
         string timeStr = $"Time \n {intTime}";
         timerText.text = timeStr;
