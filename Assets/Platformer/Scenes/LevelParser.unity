@@ -493,6 +493,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 978958905}
+  coinPrefab: {fileID: 1577792975}
+  environmentRoot: {fileID: 727678647}
+  animationDuration: 0.25
 --- !u!1001 &557820604
 PrefabInstance:
   m_ObjectHideFlags: 0

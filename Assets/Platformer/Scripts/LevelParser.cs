@@ -78,11 +78,11 @@ public class LevelParser : MonoBehaviour
                     Vector3 newPos = new Vector3(column + offset, row + offset, 0f);
                     Instantiate(questionBoxPrefab, newPos, Quaternion.identity, environmentRoot);
                 }
-                if (letter == 'C')
-                {
-                    Vector3 newPos = new Vector3(column + offset, row + offset, 0f);
-                    Instantiate(coinPrefab, newPos, Quaternion.identity, environmentRoot);
-                }
+                //if (letter == 'C')
+                //{
+                //    Vector3 newPos = new Vector3(column + offset, row + offset, 0f);
+                //    Instantiate(coinPrefab, newPos, Quaternion.identity, environmentRoot);
+                //}
             }
             row++;
         }
