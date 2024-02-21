@@ -10,6 +10,7 @@ public class LevelParser : MonoBehaviour
     public GameObject questionBoxPrefab;
     public GameObject stonePrefab;
     public GameObject coinPrefab;
+    public GameObject goombaPrefab;
     public Transform environmentRoot;
     float offset = 0.5f;
 
@@ -77,6 +78,11 @@ public class LevelParser : MonoBehaviour
                 {
                     Vector3 newPos = new Vector3(column + offset, row + offset, 0f);
                     Instantiate(questionBoxPrefab, newPos, Quaternion.identity, environmentRoot);
+                }
+                if (letter == 'G')
+                {
+                    Vector3 newPos = new Vector3(column + offset, row + offset, 0f);
+                    Instantiate(goombaPrefab, newPos, Quaternion.identity, environmentRoot);
                 }
                 //if (letter == 'C')
                 //{

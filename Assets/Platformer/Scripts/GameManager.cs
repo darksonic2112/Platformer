@@ -11,15 +11,17 @@ public class GameManager : MonoBehaviour
     private int score = 0;
     private float comboTimer = 0f;
     private int comboMultiplier = 1;
+    private int intTime;
 
     void Update()
     {
         UpdateTimer();
-        int intTime = 400 - (int)Time.realtimeSinceStartup;
+        intTime = 105 - (int)Time.realtimeSinceStartup;
+        Debug.Log(GetTimer());
         string timeStr = $"Time \n {intTime}";
         timerText.text = timeStr;
-        coinText.text = "Coins:\n" + coinAmount;
-        scoreText.text = "Score:\n" + score;
+        coinText.text = "Coins:\n" + coinAmount.ToString("00");
+        scoreText.text = "Score:\n" + score.ToString("000000");
     }
 
     private void UpdateTimer()
@@ -52,5 +54,10 @@ public class GameManager : MonoBehaviour
             comboTimer = 2f;
             comboMultiplier *= 2;
         }
+    }
+
+    public int GetTimer()
+    {
+        return intTime;
     }
 }
