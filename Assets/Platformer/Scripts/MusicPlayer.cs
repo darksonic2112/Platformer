@@ -18,21 +18,14 @@ public class MusicPlayer : MonoBehaviour
         audioSource.Play();
     }
 
-    private void Update()
+    public void RestartMusic()
     {
-        if (timer.GetTimer() == 100)
-        {
-            speedUp = true;
-            if (speedUp)
-                SpeedUpMusic();
-            speedUp = false;
-            Thread.Sleep(1000);
-        }
-        
+        audioSource.Stop(); // Stop the music if it's already playing
+        audioSource.Play(); // Start playing the music from the beginning
     }
 
     private void SpeedUpMusic()
     {
-        audioSource.pitch *= 1.5f;
+        //audioSource.pitch *= 1.5f;
     }
 }
