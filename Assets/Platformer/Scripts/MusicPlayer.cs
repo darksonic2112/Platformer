@@ -7,21 +7,25 @@ using System.Threading;
 public class MusicPlayer : MonoBehaviour
 {
     public AudioClip musicClip;
+    public AudioClip endMusic;
     public GameManager timer;
     private AudioSource audioSource;
     private bool speedUp = false;
     
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        audioSource.clip = musicClip;
-        audioSource.Play();
+        
     }
 
     public void RestartMusic()
     {
-        audioSource.Stop(); // Stop the music if it's already playing
-        audioSource.Play(); // Start playing the music from the beginning
+        //audioSource.Stop();
+        //audioSource.Play();
+    }
+
+    public void EndMusic()
+    {
+        audioSource.Stop();
     }
 
     private void SpeedUpMusic()

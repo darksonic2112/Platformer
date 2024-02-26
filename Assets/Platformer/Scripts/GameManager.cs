@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
     {
         UpdateTimer();
         time -= Time.deltaTime;
-        Debug.Log(GetTimer());
         string timeStr = $"Time:\n " + Mathf.RoundToInt(time);
         timerText.text = timeStr;
         coinText.text = "Coins:\n" + coinAmount.ToString("00");
@@ -28,6 +27,7 @@ public class GameManager : MonoBehaviour
 
         if (time == 0)
         {
+            Debug.Log("You could not finish the Level in Time");
             mario.transform.position = new Vector3(21, 2, 0);
             ResetTimer();
         }
@@ -48,7 +48,6 @@ public class GameManager : MonoBehaviour
     public void ResetTimer()
     {
         time = 100;
-        music.RestartMusic();
     }
 
     public void UpdateCoins()
