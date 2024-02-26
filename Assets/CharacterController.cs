@@ -13,6 +13,7 @@ public class CharacterController : MonoBehaviour
     public float jumpBoost = 3f;
     public GameManager timer;
     public bool isGrounded;
+    public bool headRay;
     public GameObject mario;
     private bool hasDied = false;
     private AudioSource audioSource2;
@@ -20,6 +21,7 @@ public class CharacterController : MonoBehaviour
     public AudioClip musicClip;
     public AudioClip endMusic;
     private float waitTime = 5f;
+    public LevelParser level;
 
     private Rigidbody rbody;
     private Collider col;
@@ -28,12 +30,12 @@ public class CharacterController : MonoBehaviour
     {
         rbody = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
-        
+
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.clip = musicClip;
         audioSource.volume = 0.1f;
         audioSource.Play();
-        
+
         audioSource2 = gameObject.AddComponent<AudioSource>();
         audioSource2.clip = endMusic;
         audioSource2.volume = 0.1f;
@@ -43,7 +45,7 @@ public class CharacterController : MonoBehaviour
     {
         float horizontalMovement = Input.GetAxis("Horizontal");
         Vector3 movement = Vector3.right * horizontalMovement * acceleration;
-        
+
         if (Input.GetKeyDown(KeyCode.LeftShift) && Mathf.Abs(rbody.velocity.x) < maxSpeed * 2f)
         {
             maxSpeed *= 2;
@@ -54,34 +56,72 @@ public class CharacterController : MonoBehaviour
             maxSpeed = 10f;
             rbody.AddForce(movement, ForceMode.Acceleration);
         }
-        
+
+
         if (Mathf.Abs(rbody.velocity.x) < maxSpeed)
         {
             rbody.AddForce(movement, ForceMode.Acceleration);
         }
-        
+
         if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
             rbody.AddForce(Vector3.up * jumpImpulse, ForceMode.Impulse);
         }
-        
+
         if (!isGrounded && Input.GetKey(KeyCode.Space) && rbody.velocity.y > 0)
         {
             rbody.AddForce(Vector3.up * jumpBoost * Time.deltaTime, ForceMode.Impulse);
-            
+
         }
-        
+
         if (rbody.velocity.y > 0 && !Input.GetKey(KeyCode.Space))
         {
-            rbody.velocity = new Vector3(rbody.velocity.x, Mathf.Clamp(rbody.velocity.y, 0, jumpImpulse), rbody.velocity.z);
+            rbody.velocity = new Vector3(rbody.velocity.x, Mathf.Clamp(rbody.velocity.y, 0, jumpImpulse),
+                rbody.velocity.z);
         }
+
         float yaw = (rbody.velocity.x > 0) ? 90 : -90;
         transform.rotation = Quaternion.Euler(0f, yaw, 0f);
         UpdateAnimationParameters(horizontalMovement);
-        
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            float radius = 0.3f;
+            float distance = 1.0f;
+            float yOffset = 1f;
+            
+            RaycastHit hit;
+            Vector3 origin = transform.position + Vector3.up * (col.bounds.extents.y + yOffset);
+            Vector3 direction = Vector3.up;
+            if (Physics.SphereCast(origin, radius, direction, out hit, distance))
+            {
+                if (hit.collider == null)
+                {
+                    Debug.Log("Object is null");
+                }
+
+                if (hit.collider.CompareTag("Brick"))
+                {
+                    BreakBrick(hit.collider.gameObject);
+                }
+                else if (hit.collider.CompareTag("Coin"))
+                {
+                    CollectCoin(hit.collider.gameObject);
+                }
+                else if (hit.collider.CompareTag("Coins"))
+                {
+                    CollectCoin(hit.collider.gameObject);
+                }
+                else
+                {
+                    Debug.Log("Object not found");
+                }
+            }
+        }
     }
 
-    private void OnCollisionEnter(Collision other)
+
+private void OnCollisionEnter(Collision other)
     {
         if (!hasDied && other.gameObject.CompareTag("Water"))
         {
@@ -89,6 +129,7 @@ public class CharacterController : MonoBehaviour
             audioSource.Stop();
             audioSource.Play();
             timer.ResetTimer();
+            level.LoadLevel();
         }
 
         if (other.gameObject.CompareTag("Goal"))
@@ -98,12 +139,13 @@ public class CharacterController : MonoBehaviour
             Debug.Log("You have completed the Level!");
             timer.ResetTimer();
         }
+        
     }
 
     void UpdateAnimationParameters(float horizontalMovement)
     {
         float speed = Mathf.Abs(horizontalMovement * acceleration);
-        GetComponent<Animator>().SetFloat("Speed", maxSpeed);
+        GetComponent<Animator>().SetFloat("Speed", Math.Abs(rbody.velocity.x));
         GetComponent<Animator>().SetBool("InAir", !isGrounded);
     }
 
@@ -117,9 +159,30 @@ public class CharacterController : MonoBehaviour
         float halfHeight = col.bounds.extents.y + 0.1f;
         Vector3 startPoint = transform.position;
         Vector3 endPoint = startPoint + Vector3.down * halfHeight;
+        
+        float halfHeightHead = col.bounds.extents.y + 0.9f;
+        Vector3 startPointHead = transform.position;
+        Vector3 endPointHead = startPoint + Vector3.up * halfHeightHead;
 
         isGrounded = Physics.Raycast(startPoint, Vector3.down, halfHeight);
         Color lineColor = (isGrounded) ? Color.red : Color.blue;
         Debug.DrawLine(startPoint, endPoint, lineColor, 0f, false);
+        
+        headRay = Physics.Raycast(startPointHead, Vector3.down, halfHeightHead);
+        Color lineColorHead = (isGrounded) ? Color.green : Color.red;
+        Debug.DrawLine(startPointHead, endPointHead, lineColorHead, 0f, false);
+    }
+    
+    private void BreakBrick(GameObject brick)
+    {
+        timer.UpdateScore();
+        Destroy(brick);
+    }
+
+    private void CollectCoin(GameObject coin)
+    {
+        timer.UpdateScore();
+        timer.UpdateCoins();
+        Destroy(coin);
     }
 }

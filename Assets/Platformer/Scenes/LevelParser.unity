@@ -636,9 +636,11 @@ MonoBehaviour:
   jumpBoost: 1.5
   timer: {fileID: 978958905}
   isGrounded: 0
+  headRay: 0
   mario: {fileID: 725331864}
   musicClip: {fileID: 8300000, guid: b43e7b2911ae57b4aa88fa1a55217291, type: 3}
   endMusic: {fileID: 8300000, guid: a62ec0e48adab5d4a8f7166fa5e35031, type: 3}
+  level: {fileID: 406602703}
 --- !u!54 &725331868
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1839,7 +1841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6739891602594278133, guid: 8e386693ed49ea04a94571f7eeef96cc, type: 3}
       propertyPath: m_TagString
-      value: Coin
+      value: Coins
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

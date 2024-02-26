@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelParser : MonoBehaviour
 {
-    public string filename;
+    public string filename = "Test";
     public GameObject rockPrefab;
     public GameObject brickPrefab;
     public GameObject questionBoxPrefab;
@@ -32,7 +32,7 @@ public class LevelParser : MonoBehaviour
     }
 
     // --------------------------------------------------------------------------
-    private void LoadLevel()
+    public void LoadLevel()
     {
         string fileToParse = $"{Application.dataPath}{"/Resources/"}{filename}.txt";
         Debug.Log($"Loading level file: {fileToParse}");
@@ -96,11 +96,11 @@ public class LevelParser : MonoBehaviour
                 //    Vector3 newPos = new Vector3(column + offset, row + offset, 0f);
                 //    Instantiate(goombaPrefab, newPos, Quaternion.identity, environmentRoot);
                 //}
-                //if (letter == 'C')
-                //{
-                //    Vector3 newPos = new Vector3(column + offset, row + offset, 0f);
-                //    Instantiate(coinPrefab, newPos, Quaternion.identity, environmentRoot);
-                //}
+                if (letter == 'C')
+                {
+                    Vector3 newPos = new Vector3(column + offset, row + offset, 0f);
+                    Instantiate(coinPrefab, newPos, Quaternion.identity, environmentRoot);
+                }
             }
             row++;
         }
