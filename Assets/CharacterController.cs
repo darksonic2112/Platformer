@@ -94,11 +94,11 @@ public class CharacterController : MonoBehaviour
             jumpBufferCounter = 0f;
         }
 
-        if (!(coyoteTimeCounter > 0) && jumpBufferCounter > 0f && rbody.velocity.y > 0)
+        if (Input.GetKey(KeyCode.Space) && isGrounded && rbody.velocity.y > 0)
         {
-            rbody.AddForce(Vector3.up * jumpBoost * Time.deltaTime, ForceMode.Impulse);
-            jumpBufferCounter = 0f;
+            rbody.AddForce(Vector3.up * 1.5f, ForceMode.Impulse);
         }
+            
 
         if (rbody.velocity.y > 0 && !Input.GetKey(KeyCode.Space))
         {
@@ -192,7 +192,7 @@ private void OnCollisionEnter(Collision other)
 
     void UpdateGroundedStatus()
     {
-        float halfHeight = col.bounds.extents.y - 0.1f;
+        float halfHeight = col.bounds.extents.y - 0.8f;
         Vector3 startPoint = transform.position;
         Vector3 endPoint = startPoint + Vector3.down * halfHeight;
         
@@ -221,4 +221,5 @@ private void OnCollisionEnter(Collision other)
         timer.UpdateCoins();
         Destroy(coin);
     }
+    
 }
