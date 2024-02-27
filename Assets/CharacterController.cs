@@ -31,6 +31,8 @@ public class CharacterController : MonoBehaviour
     
     private float jumpBufferTime = 1f;
     private float jumpBufferCounter;
+    
+    public float maxFallSpeed = 15f;
 
     void Start()
     {
@@ -109,6 +111,10 @@ public class CharacterController : MonoBehaviour
             coyoteTimeCounter = 0f;
         }
         
+        if (!isGrounded && rbody.velocity.y < 0)
+        {
+            rbody.velocity = new Vector3(rbody.velocity.x, Mathf.Clamp(rbody.velocity.y, -maxFallSpeed, Mathf.Infinity), rbody.velocity.z);
+        }
 
         float yaw = (rbody.velocity.x > 0) ? 90 : -90;
         transform.rotation = Quaternion.Euler(0f, yaw, 0f);
