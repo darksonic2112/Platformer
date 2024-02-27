@@ -1,3 +1,4 @@
+// Coyote Timer and Jump Buffer: https://www.youtube.com/watch?v=RFix_Kg2Di0 
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,6 +26,11 @@ public class CharacterController : MonoBehaviour
 
     private Rigidbody rbody;
     private Collider col;
+    private float coyoteTime = 0.2f;
+    private float coyoteTimeCounter;
+    
+    private float jumpBufferTime = 1f;
+    private float jumpBufferCounter;
 
     void Start()
     {
@@ -57,21 +63,39 @@ public class CharacterController : MonoBehaviour
             rbody.AddForce(movement, ForceMode.Acceleration);
         }
 
+        if (isGrounded)
+        {
+            coyoteTimeCounter = coyoteTime;
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+        }
 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            jumpBufferCounter = jumpBufferTime;
+        }
+        else
+        {
+            jumpBufferCounter -= Time.deltaTime;
+        }
+        
         if (Mathf.Abs(rbody.velocity.x) < maxSpeed)
         {
             rbody.AddForce(movement, ForceMode.Acceleration);
         }
 
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
+        if (coyoteTimeCounter > 0 && jumpBufferCounter > 0f)
         {
             rbody.AddForce(Vector3.up * jumpImpulse, ForceMode.Impulse);
+            jumpBufferCounter = 0f;
         }
 
-        if (!isGrounded && Input.GetKey(KeyCode.Space) && rbody.velocity.y > 0)
+        if (!(coyoteTimeCounter > 0) && jumpBufferCounter > 0f && rbody.velocity.y > 0)
         {
             rbody.AddForce(Vector3.up * jumpBoost * Time.deltaTime, ForceMode.Impulse);
-
+            jumpBufferCounter = 0f;
         }
 
         if (rbody.velocity.y > 0 && !Input.GetKey(KeyCode.Space))
@@ -79,6 +103,12 @@ public class CharacterController : MonoBehaviour
             rbody.velocity = new Vector3(rbody.velocity.x, Mathf.Clamp(rbody.velocity.y, 0, jumpImpulse),
                 rbody.velocity.z);
         }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            coyoteTimeCounter = 0f;
+        }
+        
 
         float yaw = (rbody.velocity.x > 0) ? 90 : -90;
         transform.rotation = Quaternion.Euler(0f, yaw, 0f);
@@ -156,7 +186,7 @@ private void OnCollisionEnter(Collision other)
 
     void UpdateGroundedStatus()
     {
-        float halfHeight = col.bounds.extents.y + 0.1f;
+        float halfHeight = col.bounds.extents.y - 0.1f;
         Vector3 startPoint = transform.position;
         Vector3 endPoint = startPoint + Vector3.down * halfHeight;
         
