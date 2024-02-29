@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     private int coinAmount = 0;
     private int score = 0;
     private int intTime;
-    private float time = 100f;
+    private float time = 5f;
 
     void Update()
     {
@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
         coinText.text = "Coins:\n" + coinAmount.ToString("00");
         scoreText.text = "Score:\n" + score.ToString("000000");
 
-        if (time == 0)
+        if (time < 1)
         {
             Debug.Log("You could not finish the Level in Time");
             mario.transform.position = new Vector3(21, 2, 0);

@@ -144,10 +144,6 @@ public class CharacterController : MonoBehaviour
                 {
                     CollectCoin(hit.collider.gameObject);
                 }
-                else if (hit.collider.CompareTag("Coins"))
-                {
-                    CollectCoin(hit.collider.gameObject);
-                }
                 else
                 {
                     Debug.Log("Object not found");
@@ -174,6 +170,11 @@ private void OnCollisionEnter(Collision other)
             audioSource2.Play();
             Debug.Log("You have completed the Level!");
             timer.ResetTimer();
+        }
+
+        if (other.gameObject.CompareTag("Coins"))
+        {
+            Destroy(other.gameObject);
         }
         
     }

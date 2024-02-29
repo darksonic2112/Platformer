@@ -641,6 +641,7 @@ MonoBehaviour:
   musicClip: {fileID: 8300000, guid: b43e7b2911ae57b4aa88fa1a55217291, type: 3}
   endMusic: {fileID: 8300000, guid: a62ec0e48adab5d4a8f7166fa5e35031, type: 3}
   level: {fileID: 406602703}
+  maxFallSpeed: 15
 --- !u!54 &725331868
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1691,7 +1692,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 60da714279d452247b78d75ad6e6a68a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 21.59
+      value: 23.03
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 60da714279d452247b78d75ad6e6a68a, type: 3}
       propertyPath: m_LocalPosition.y
